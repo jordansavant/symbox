@@ -42,12 +42,35 @@ EOF;
             $this->input = readline("> ");
             readline_add_history($input);
 
-            #preg_match('/([a-zA-z]+[a-zA-Z0-9]*)::([a-zA-Z0-9]+)\((.*)\)/', $input, $match);
+            #preg_match('/([a-zA-z]+[a-zA-Z0-9]*)::([a-zA-Z0-9]+)\((.*)\)/', $input, $match); // Static method call
+            $this->DetectVariableQuery();
             $this->DetectNewObjectInstance();
 
             var_dump($this->assignments);
         }
         // End
+    }
+
+    // INCOMPLETE
+    private function DetectVariableQuery()
+    {
+        $match = array();
+        preg_match('/[ ^]echo[ ]+\$([a-zA-Z]+[a-zA-Z0-9]*)/', $this->input, $match);
+        var_dump($match);
+
+        if(count($match) == 2)
+        {
+            $var = $match[1];
+
+            if(array_key_exists($var, $this->assignments))
+            {
+                var_dump($this->assignments[$var]);
+            }
+            else
+            {
+                echo 'undefined';
+            }
+        }
     }
 
 
